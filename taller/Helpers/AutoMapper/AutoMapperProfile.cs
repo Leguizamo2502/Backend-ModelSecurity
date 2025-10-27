@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entity.Domain.Models;
 using Entity.Domain.Models.Implements;
+using Entity.DTOs.Auth;
 using Entity.DTOs.Default;
 using Entity.DTOs.Select;
 
@@ -43,6 +44,9 @@ namespace Helpers.AutoMapper
 
             CreateMap<FormModule, FormModuleDto>().ReverseMap();
             CreateMap<FormModule, FormModuleSelectDto>().ReverseMap();
+
+            CreateMap<RegisterUserDto, User>();
+            CreateMap<RegisterUserDto, Person>();
 
 
 

@@ -1,5 +1,6 @@
 ﻿using Entity.Domain.Interfaces;
 using Entity.Domain.Models.Base;
+using System.Text.RegularExpressions;
 
 namespace Helpers.Business
 {
@@ -81,6 +82,14 @@ namespace Helpers.Business
             {
                 if (entity.IsDeleted)
                     throw new InvalidOperationException(message);
+            }
+            public static bool IsValidPassword(string password)
+            {
+                if (string.IsNullOrWhiteSpace(password)) return false;
+
+                // Al menos 6 caracteres y una mayúscula
+                var regex = new Regex(@"^(?=.*[A-Z]).{6,}$");
+                return regex.IsMatch(password);
             }
 
             /// <summary>

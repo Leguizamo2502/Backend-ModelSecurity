@@ -8,6 +8,5 @@ namespace Business.Interfaces.IBusinessImplements
     public interface IUserService : IBusiness<UserSelectDto,UserDto>
     {
         Task<UserDto> CreateAsyncUser(UserDto dto); 
-        Task<User> createUserGoogle(string email, string name);
     }
 }

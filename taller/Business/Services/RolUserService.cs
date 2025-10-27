@@ -31,7 +31,7 @@ namespace Business.Services
         {
             try
             {
-                var entity = await _dataRolUser.AsignateUserRTo(id);
+                var entity = await _dataRolUser.AsignateUserRol(id);
                 InitializeLogical.InitializeLogicalState(entity); // Inicializa estado lógico (is_deleted = false)
                                                                   // Inicializa estado lógico (is_deleted = false)
 

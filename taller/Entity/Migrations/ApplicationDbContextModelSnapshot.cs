@@ -22,6 +22,38 @@ namespace Entity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Entity.Domain.Models.Auth.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReplacedByTokenHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("Entity.Domain.Models.Implements.Form", b =>
                 {
                     b.Property<int>("Id")
@@ -49,7 +81,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("forms");
+                    b.ToTable("Forms");
 
                     b.HasData(
                         new
@@ -101,7 +133,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("form_modules");
+                    b.ToTable("FormModules");
 
                     b.HasData(
                         new
@@ -151,7 +183,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("modules");
+                    b.ToTable("Modules");
 
                     b.HasData(
                         new
@@ -201,7 +233,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("permissions");
+                    b.ToTable("Permissions");
 
                     b.HasData(
                         new
@@ -264,6 +296,10 @@ namespace Entity.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("Identification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -277,7 +313,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("persons");
+                    b.ToTable("Persons");
 
                     b.HasData(
                         new
@@ -287,6 +323,7 @@ namespace Entity.Migrations
                             Address = "AV SiempreViva",
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Admin",
+                            Identification = "0000000000",
                             IsDeleted = false,
                             LastName = "Admin",
                             PhoneNumber = "1234567890"
@@ -298,6 +335,7 @@ namespace Entity.Migrations
                             Address = "AV SiempreViva",
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "User",
+                            Identification = "1111111111",
                             IsDeleted = false,
                             LastName = "User",
                             PhoneNumber = "1234567890"
@@ -331,7 +369,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("rols");
+                    b.ToTable("Rols");
 
                     b.HasData(
                         new
@@ -388,7 +426,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("RolId");
 
-                    b.ToTable("rol_form_permissions");
+                    b.ToTable("RolFormPermissions");
 
                     b.HasData(
                         new
@@ -434,23 +472,18 @@ namespace Entity.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
                     b.Property<string>("Password")
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("PersonId")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId")
-                        .IsUnique()
-                        .HasFilter("[PersonId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("users");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -460,7 +493,6 @@ namespace Entity.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@example.com",
                             IsDeleted = false,
-                            Name = "admin",
                             Password = "admin123",
                             PersonId = 1
                         },
@@ -471,7 +503,6 @@ namespace Entity.Migrations
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "User@example.com",
                             IsDeleted = false,
-                            Name = "User",
                             Password = "user123",
                             PersonId = 2
                         });
@@ -506,7 +537,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("rolUsers");
+                    b.ToTable("RolUsers");
 
                     b.HasData(
                         new
@@ -571,7 +602,8 @@ namespace Entity.Migrations
                     b.HasOne("Entity.Domain.Models.Implements.Person", "Person")
                         .WithOne("User")
                         .HasForeignKey("Entity.Domain.Models.Implements.User", "PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
                 });

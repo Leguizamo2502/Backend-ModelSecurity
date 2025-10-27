@@ -9,11 +9,11 @@ namespace Data.Services
 {
     public class RolUserRepository : DataGeneric<RolUser>, IRolUserRepository
     {
-        public RolUserRepository(ApplicationDbContext context) :    base(context)
+        public RolUserRepository(ApplicationDbContext context) : base(context)
         {
         }
 
-        public async Task<RolUser> AsignateUserRTo(int userId)
+        public async Task<RolUser> AsignateUserRol(int userId)
         {
             var rolUser = new RolUser
             {
@@ -23,7 +23,7 @@ namespace Data.Services
                 IsDeleted = false
             };
 
-            _context.rolUsers.Add(rolUser);
+            _dbSet.Add(rolUser);
             await _context.SaveChangesAsync();
 
             return rolUser;
@@ -57,6 +57,17 @@ namespace Data.Services
                       .Where(u => u.Id == id)
                       .FirstOrDefaultAsync(u => u.IsDeleted == false);   
 
+        }
+
+        public async Task<IEnumerable<string>> GetRolesUserAsync(int userId)
+        {
+            var roles = await _dbSet
+                    .Where(ru => ru.UserId == userId && !string.IsNullOrWhiteSpace(ru.Rol.Name))
+                    .Select(ru => ru.Rol.Name)
+                    .Distinct()
+                    .ToListAsync();
+
+            return roles;
         }
 
         public async Task<IEnumerable<string>> GetJoinRolesAsync(int idUser)

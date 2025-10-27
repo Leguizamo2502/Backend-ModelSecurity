@@ -16,15 +16,13 @@ namespace Business.Services
     {
         private readonly IUserRepository _dataUser;
         private readonly ILogger<UserService> _logger;
-        private readonly EncriptePassword _utilities;
 
         private readonly IRolUserService _rolUserService;
 
 
-        public UserService(IUserRepository data, ILogger<UserService> logger, EncriptePassword utilities, IMapper mapper, IRolUserService rolUserService) : base(data, mapper)
+        public UserService(IUserRepository data, ILogger<UserService> logger, IMapper mapper, IRolUserService rolUserService) : base(data, mapper)
         {
             _dataUser = data;
-            _utilities = utilities;
             _logger = logger;
             _rolUserService = rolUserService;
         }
@@ -52,28 +50,7 @@ namespace Business.Services
 
             }
 
-        // Crear
-        public async Task<User> createUserGoogle(string email, string name)
-        {
-            var user = await _dataUser.FindEmail(email);
-
-
-            if (user != null) return user;
-
-            var newUser = new User
-            {
-                Name = name,
-                Password = null,
-                Email = email
-            };
-            InitializeLogical.InitializeLogicalState(newUser); // Inicializa estado lógico (is_deleted = false)
-                                                              // Inicializa estado lógico (is_deleted = false)
-            await _dataUser.CreateAsync(newUser);
-            return newUser;
-
-
-            //password = _utilities.EncripteSHA256("hola"),
-        }
+       
 
         //Actalizar
         public async Task<bool> UpdateAsyncUser(UserDto dto)

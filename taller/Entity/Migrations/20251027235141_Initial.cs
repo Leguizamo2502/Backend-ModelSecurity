@@ -14,7 +14,7 @@ namespace Entity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "forms",
+                name: "Forms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -27,11 +27,11 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_forms", x => x.Id);
+                    table.PrimaryKey("PK_Forms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "modules",
+                name: "Modules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -44,11 +44,11 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_modules", x => x.Id);
+                    table.PrimaryKey("PK_Modules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "permissions",
+                name: "Permissions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -61,17 +61,18 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_permissions", x => x.Id);
+                    table.PrimaryKey("PK_Permissions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "persons",
+                name: "Persons",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "varchar(100)", nullable: false),
                     LastName = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Identification = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "varchar(20)", nullable: false),
                     Address = table.Column<string>(type: "varchar(100)", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
@@ -80,11 +81,29 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_persons", x => x.Id);
+                    table.PrimaryKey("PK_Persons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "rols",
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    TokenHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
+                    ReplacedByTokenHash = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rols",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -97,11 +116,11 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_rols", x => x.Id);
+                    table.PrimaryKey("PK_Rols", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "form_modules",
+                name: "FormModules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -114,48 +133,47 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_form_modules", x => x.Id);
+                    table.PrimaryKey("PK_FormModules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_form_modules_forms_FormId",
+                        name: "FK_FormModules_Forms_FormId",
                         column: x => x.FormId,
-                        principalTable: "forms",
+                        principalTable: "Forms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_form_modules_modules_ModuleId",
+                        name: "FK_FormModules_Modules_ModuleId",
                         column: x => x.ModuleId,
-                        principalTable: "modules",
+                        principalTable: "Modules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "users",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     Password = table.Column<string>(type: "varchar(100)", nullable: true),
                     Email = table.Column<string>(type: "varchar(150)", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
+                    PersonId = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_users_persons_PersonId",
+                        name: "FK_Users_Persons_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "persons",
+                        principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "rol_form_permissions",
+                name: "RolFormPermissions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -169,29 +187,29 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_rol_form_permissions", x => x.Id);
+                    table.PrimaryKey("PK_RolFormPermissions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_rol_form_permissions_forms_FormId",
+                        name: "FK_RolFormPermissions_Forms_FormId",
                         column: x => x.FormId,
-                        principalTable: "forms",
+                        principalTable: "Forms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_rol_form_permissions_permissions_PermissionId",
+                        name: "FK_RolFormPermissions_Permissions_PermissionId",
                         column: x => x.PermissionId,
-                        principalTable: "permissions",
+                        principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_rol_form_permissions_rols_RolId",
+                        name: "FK_RolFormPermissions_Rols_RolId",
                         column: x => x.RolId,
-                        principalTable: "rols",
+                        principalTable: "Rols",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "rolUsers",
+                name: "RolUsers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -204,23 +222,23 @@ namespace Entity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_rolUsers", x => x.Id);
+                    table.PrimaryKey("PK_RolUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_rolUsers_rols_RolId",
+                        name: "FK_RolUsers_Rols_RolId",
                         column: x => x.RolId,
-                        principalTable: "rols",
+                        principalTable: "Rols",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_rolUsers_users_UserId",
+                        name: "FK_RolUsers_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "users",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "forms",
+                table: "Forms",
                 columns: new[] { "Id", "Active", "CreatedAt", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
@@ -229,7 +247,7 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "modules",
+                table: "Modules",
                 columns: new[] { "Id", "Active", "CreatedAt", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
@@ -238,7 +256,7 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "permissions",
+                table: "Permissions",
                 columns: new[] { "Id", "Active", "CreatedAt", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
@@ -249,16 +267,16 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "persons",
-                columns: new[] { "Id", "Active", "Address", "CreatedAt", "FirstName", "IsDeleted", "LastName", "PhoneNumber" },
+                table: "Persons",
+                columns: new[] { "Id", "Active", "Address", "CreatedAt", "FirstName", "Identification", "IsDeleted", "LastName", "PhoneNumber" },
                 values: new object[,]
                 {
-                    { 1, true, "AV SiempreViva", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", false, "Admin", "1234567890" },
-                    { 2, true, "AV SiempreViva", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", false, "User", "1234567890" }
+                    { 1, true, "AV SiempreViva", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "0000000000", false, "Admin", "1234567890" },
+                    { 2, true, "AV SiempreViva", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User", "1111111111", false, "User", "1234567890" }
                 });
 
             migrationBuilder.InsertData(
-                table: "rols",
+                table: "Rols",
                 columns: new[] { "Id", "Active", "CreatedAt", "Description", "IsDeleted", "Name" },
                 values: new object[,]
                 {
@@ -267,7 +285,7 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "form_modules",
+                table: "FormModules",
                 columns: new[] { "Id", "Active", "CreatedAt", "FormId", "IsDeleted", "ModuleId" },
                 values: new object[,]
                 {
@@ -276,7 +294,7 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "rol_form_permissions",
+                table: "RolFormPermissions",
                 columns: new[] { "Id", "Active", "CreatedAt", "FormId", "IsDeleted", "PermissionId", "RolId" },
                 values: new object[,]
                 {
@@ -285,91 +303,93 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "users",
-                columns: new[] { "Id", "Active", "CreatedAt", "Email", "IsDeleted", "Name", "Password", "PersonId" },
+                table: "Users",
+                columns: new[] { "Id", "Active", "CreatedAt", "Email", "IsDeleted", "Password", "PersonId" },
                 values: new object[,]
                 {
-                    { 1, true, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@example.com", false, "admin", "admin123", 1 },
-                    { 2, true, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User@example.com", false, "User", "user123", 2 }
+                    { 1, true, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@example.com", false, "admin123", 1 },
+                    { 2, true, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "User@example.com", false, "user123", 2 }
                 });
 
             migrationBuilder.InsertData(
-                table: "rolUsers",
+                table: "RolUsers",
                 columns: new[] { "Id", "Active", "CreatedAt", "IsDeleted", "RolId", "UserId" },
                 values: new object[] { 1, true, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, 1, 1 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_form_modules_FormId",
-                table: "form_modules",
+                name: "IX_FormModules_FormId",
+                table: "FormModules",
                 column: "FormId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_form_modules_ModuleId",
-                table: "form_modules",
+                name: "IX_FormModules_ModuleId",
+                table: "FormModules",
                 column: "ModuleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rol_form_permissions_FormId",
-                table: "rol_form_permissions",
+                name: "IX_RolFormPermissions_FormId",
+                table: "RolFormPermissions",
                 column: "FormId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rol_form_permissions_PermissionId",
-                table: "rol_form_permissions",
+                name: "IX_RolFormPermissions_PermissionId",
+                table: "RolFormPermissions",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rol_form_permissions_RolId",
-                table: "rol_form_permissions",
+                name: "IX_RolFormPermissions_RolId",
+                table: "RolFormPermissions",
                 column: "RolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rolUsers_RolId",
-                table: "rolUsers",
+                name: "IX_RolUsers_RolId",
+                table: "RolUsers",
                 column: "RolId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_rolUsers_UserId",
-                table: "rolUsers",
+                name: "IX_RolUsers_UserId",
+                table: "RolUsers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_PersonId",
-                table: "users",
+                name: "IX_Users_PersonId",
+                table: "Users",
                 column: "PersonId",
-                unique: true,
-                filter: "[PersonId] IS NOT NULL");
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "form_modules");
+                name: "FormModules");
 
             migrationBuilder.DropTable(
-                name: "rol_form_permissions");
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "rolUsers");
+                name: "RolFormPermissions");
 
             migrationBuilder.DropTable(
-                name: "modules");
+                name: "RolUsers");
 
             migrationBuilder.DropTable(
-                name: "forms");
+                name: "Modules");
 
             migrationBuilder.DropTable(
-                name: "permissions");
+                name: "Forms");
 
             migrationBuilder.DropTable(
-                name: "rols");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "Rols");
 
             migrationBuilder.DropTable(
-                name: "persons");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Persons");
         }
     }
 }

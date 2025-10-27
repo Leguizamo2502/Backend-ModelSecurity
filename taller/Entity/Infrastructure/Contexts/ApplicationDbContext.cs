@@ -1,5 +1,6 @@
 ﻿using Entity.Domain.Interfaces;
 using Entity.Domain.Models;
+using Entity.Domain.Models.Auth;
 using Entity.Domain.Models.Implements;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -29,17 +30,18 @@ namespace Entity.Infrastructure.Contexts
         ///Implementación DBSet
         ///</summary>
 
-        public DbSet<User> users {  get; set; }
-        public DbSet<Person> persons {  get; set; }
-        public DbSet<Rol> rols { get; set; }
-        public DbSet<RolUser> rolUsers { get; set; }
+        public DbSet<User> Users {  get; set; }
+        public DbSet<Person> Persons {  get; set; }
+        public DbSet<Rol> Rols { get; set; }
+        public DbSet<RolUser> RolUsers { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
-        public DbSet<Form> forms { get; set; }
-        public DbSet<Domain.Models.Implements.Module> modules { get; set; }
-        public DbSet<Permission> permissions { get; set; }
-        public DbSet<RolFormPermission> rol_form_permissions { get; set; }
-        public DbSet<FormModule> form_modules { get; set; }
+        public DbSet<Form> Forms { get; set; }
+        public DbSet<Domain.Models.Implements.Module> Modules { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolFormPermission> RolFormPermissions { get; set; }
+        public DbSet<FormModule> FormModules { get; set; }
         //public DbSet<TouristicAttraction> TouristicAttraction { get; set; }
 
 

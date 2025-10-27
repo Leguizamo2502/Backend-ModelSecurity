@@ -1,3 +1,4 @@
+using Entity.Domain.Config;
 using Web.Extensions;
 using Web.Service;
 
@@ -15,8 +16,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplicationServices();
 builder.Services.AddSwaggerWithJwt();
 builder.Services.AddDatabase(builder.Configuration);
+
+//Jwt y Cookie
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCustomCors(builder.Configuration);
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<CookieSettings>(builder.Configuration.GetSection("Cookie"));
 
 
 var app = builder.Build();
@@ -32,7 +38,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();// Usar autentificación de JWT
+app.UseAuthentication();
 
 app.UseCors();
 
