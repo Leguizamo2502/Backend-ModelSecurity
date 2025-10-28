@@ -9,7 +9,9 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<FormModule> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             builder.HasData(
                 new FormModule
                 { 
@@ -18,7 +20,7 @@ namespace Entity.Infrastructure.DataInit
                     ModuleId = 1,
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new FormModule
                 {
@@ -27,7 +29,7 @@ namespace Entity.Infrastructure.DataInit
                     ModuleId = 2,
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
 
                 }
             );

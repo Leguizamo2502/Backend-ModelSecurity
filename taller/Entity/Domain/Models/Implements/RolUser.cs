@@ -1,8 +1,5 @@
 ﻿using Entity.Domain.Models.Base;
 using Entity.Domain.Models.Implements;
-using Entity.Infrastructure.Anotation;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 public class RolUser : BaseModel
 {

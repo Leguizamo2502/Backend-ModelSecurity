@@ -9,7 +9,10 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<Person> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 
             builder.Property(u => u.FirstName)
                 .HasColumnType("varchar(100)");
@@ -34,7 +37,7 @@ namespace Entity.Infrastructure.DataInit
                     Address = "AV SiempreViva",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new Person
                 {
@@ -46,7 +49,7 @@ namespace Entity.Infrastructure.DataInit
                     Address = "AV SiempreViva",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 }
 
             );

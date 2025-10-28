@@ -9,7 +9,10 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<RolUser> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
             builder.HasData(
                 new RolUser
                 {
@@ -18,7 +21,7 @@ namespace Entity.Infrastructure.DataInit
                     RolId = 1,
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 }
             );
         }

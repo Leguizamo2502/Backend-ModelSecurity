@@ -9,7 +9,9 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
             builder.Property(u => u.Name)
                 .HasColumnType("varchar(100)");
 
@@ -24,7 +26,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Permiso de creacion",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new Permission
                 {
@@ -33,7 +35,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Permiso de borrar",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new Permission
                 {
@@ -42,7 +44,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Permiso de Actualizar",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new Permission
                 {
@@ -51,7 +53,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Permiso de Leer",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 }
 
             );

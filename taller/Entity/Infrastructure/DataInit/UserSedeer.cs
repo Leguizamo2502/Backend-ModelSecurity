@@ -9,8 +9,11 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
-         
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+
 
             builder.Property(u => u.Password)
                 .HasColumnType("varchar(100)");
@@ -27,7 +30,7 @@ namespace Entity.Infrastructure.DataInit
                     Active = true,
                     IsDeleted = false,
                     PersonId = 1,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt =date
                 },
                 new User
                 {
@@ -37,7 +40,7 @@ namespace Entity.Infrastructure.DataInit
                     Active = true,
                     IsDeleted = false,
                     PersonId = 2,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 }
 
             );

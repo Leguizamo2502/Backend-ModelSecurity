@@ -1,11 +1,6 @@
 ﻿using Entity.Domain.Models.Implements;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Entity.Infrastructure.DataInit
 {
@@ -14,7 +9,10 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<RolFormPermission> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 
             builder.HasData(
                 new RolFormPermission
@@ -25,7 +23,7 @@ namespace Entity.Infrastructure.DataInit
                     PermissionId = 1,
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new RolFormPermission
                 {
@@ -35,7 +33,7 @@ namespace Entity.Infrastructure.DataInit
                     PermissionId = 2,
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
 
                 }
             );

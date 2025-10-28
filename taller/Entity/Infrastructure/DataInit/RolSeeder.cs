@@ -9,7 +9,10 @@ namespace Entity.Infrastructure.DataInit
         public void Configure(EntityTypeBuilder<Rol> builder)
         {
             builder.Property(u => u.Id)
-                .ValueGeneratedOnAdd(); // La base de datos generará el ID automáticamente
+                .ValueGeneratedOnAdd();
+
+            var date = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
             builder.Property(u => u.Name)
                 .HasColumnType("varchar(100)");
 
@@ -24,7 +27,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Rol con permisos administrativos",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
                 },
                 new Rol
                 {
@@ -33,7 +36,7 @@ namespace Entity.Infrastructure.DataInit
                     Description = "Rol con permisos de usuario",
                     Active = true,
                     IsDeleted = false,
-                    CreatedAt = new DateTime(2025, 1, 1)
+                    CreatedAt = date
 
                 }
             );

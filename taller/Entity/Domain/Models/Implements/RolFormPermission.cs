@@ -1,7 +1,4 @@
 ﻿using Entity.Domain.Models.Base;
-using Entity.Infrastructure.Anotation;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entity.Domain.Models.Implements
 {
