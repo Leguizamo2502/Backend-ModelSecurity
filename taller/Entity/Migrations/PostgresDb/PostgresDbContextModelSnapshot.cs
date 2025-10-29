@@ -493,7 +493,7 @@ namespace Entity.Migrations.PostgresDb
                             CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@example.com",
                             IsDeleted = false,
-                            Password = "admin123",
+                            Password = "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2",
                             PersonId = 1
                         },
                         new
