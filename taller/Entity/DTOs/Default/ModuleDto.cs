@@ -1,5 +1,4 @@
-﻿using Entity.Domain.Interfaces;
-using Entity.DTOs.Base;
+﻿using Entity.DTOs.Base;
 
 namespace Entity.DTOs.Default
 {

@@ -1,4 +1,9 @@
 using Entity.Domain.Config;
+using Entity.Validations.Interfaces;
+using Entity.Validations.Modules.Auth;
+using Entity.Validations.Service;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Web.Extensions;
 using Web.Service;
 
@@ -24,6 +29,10 @@ builder.Services.AddCustomCors(builder.Configuration);
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<CookieSettings>(builder.Configuration.GetSection("Cookie"));
 
+//Validations
+builder.Services.AddScoped<IValidatorService, ValidatorService>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterUserDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
