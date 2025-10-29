@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Entity.Infrastructure.Contexts
 {
-    public class ApplicationDbContext : DbContext
+    public class    ApplicationDbContext : DbContext
     {
         protected readonly IConfiguration _configuration;
         private readonly IAuditService _auditService;
@@ -24,11 +24,8 @@ namespace Entity.Infrastructure.Contexts
             _configuration = configuration;
             _http = httpContextAccessor;
         }
-        public ApplicationDbContext(
-             DbContextOptions<ApplicationDbContext> options
-         ) : base(options)
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+
         ///<summary>
         ///Implementación DBSet
         ///</summary>
