@@ -33,7 +33,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Admin123.
-      - POSTGRES_DB=app_database
+      - POSTGRES_DB=dbModelSecurity
     ports:
       - "5439:5432"
     volumes:
@@ -56,7 +56,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=Admin123.
-      - MYSQL_DATABASE=app_database
+      - MYSQL_DATABASE=dbModelSecurity
       - MYSQL_USER=app_user
       - MYSQL_PASSWORD=apppass
     ports:
