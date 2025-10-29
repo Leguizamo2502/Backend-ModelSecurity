@@ -16,7 +16,7 @@ namespace Web.Controllers.Implements
 
     public class RolController : BaseController<RolSelectDto,RolDto, IRolService>
     {
-        public RolController(IRolService service, ILogger logger) : base(service, logger)
+        public RolController(IRolService service, ILogger<RolController> logger) : base(service, logger)
         {
         }
 

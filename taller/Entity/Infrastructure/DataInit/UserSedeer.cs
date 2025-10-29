@@ -26,7 +26,7 @@ namespace Entity.Infrastructure.DataInit
                 {
                     Id = 1,
                     Email = "admin@example.com",
-                    Password = "admin123",
+                    Password = "3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2", //Admin123
                     Active = true,
                     IsDeleted = false,
                     PersonId = 1,
