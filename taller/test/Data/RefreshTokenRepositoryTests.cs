@@ -21,9 +21,6 @@ namespace test.Data.Auth
             _context = new ApplicationDbContext(options);
             _repository = new RefreshTokenRepository(_context);
 
-            // ==========================
-            // Datos iniciales
-            // ==========================
             _context.RefreshTokens.AddRange(
                 new RefreshToken
                 {
@@ -53,11 +50,8 @@ namespace test.Data.Auth
             _context.SaveChanges();
         }
 
-        // =====================================================
-        // TEST 1: AddAsync
-        // =====================================================
         [Fact]
-        public async Task AddAsync_ShouldInsertNewToken()
+        public async Task AddAsyncShouldInsertNewToken()
         {
             var newToken = new RefreshToken
             {
@@ -75,11 +69,8 @@ namespace test.Data.Auth
             stored!.TokenHash.Should().Be("hash_new");
         }
 
-        // =====================================================
-        // TEST 2: GetByHashAsync
-        // =====================================================
         [Fact]
-        public async Task GetByHashAsync_ShouldReturnToken_WhenExists()
+        public async Task GetByHashAsyncShouldReturnTokenWhenExists()
         {
             var result = await _repository.GetByHashAsync("hash_valid_1");
 
@@ -89,17 +80,14 @@ namespace test.Data.Auth
         }
 
         [Fact]
-        public async Task GetByHashAsync_ShouldReturnNull_WhenNotExists()
+        public async Task GetByHashAsyncShouldReturnNullWhenNotExists()
         {
             var result = await _repository.GetByHashAsync("not_found");
             result.Should().BeNull();
         }
 
-        // =====================================================
-        // TEST 3: RevokeAsync
-        // =====================================================
         [Fact]
-        public async Task RevokeAsync_ShouldSetIsRevokedTrue_AndSetReplacedByHash()
+        public async Task RevokeAsyncShouldSetIsRevokedTrueAndSetReplacedByHash()
         {
             var token = await _context.RefreshTokens.FindAsync(1);
             token.Should().NotBeNull();
@@ -112,7 +100,7 @@ namespace test.Data.Auth
         }
 
         [Fact]
-        public async Task RevokeAsync_ShouldDoNothing_WhenTokenNotExists()
+        public async Task RevokeAsyncShouldDoNothingWhenTokenNotExists()
         {
             var fakeToken = new RefreshToken { Id = 999 };
 
@@ -122,11 +110,8 @@ namespace test.Data.Auth
             countRevoked.Should().Be(1); // Solo el del test anterior
         }
 
-        // =====================================================
-        // TEST 4: GetValidTokensByUserAsync
-        // =====================================================
         [Fact]
-        public async Task GetValidTokensByUserAsync_ShouldReturnOnlyNonRevokedAndNonExpiredTokens()
+        public async Task GetValidTokensByUserAsyncShouldReturnOnlyNonRevokedAndNonExpiredTokens()
         {
             var result = await _repository.GetValidTokensByUserAsync(10);
 
@@ -135,7 +120,7 @@ namespace test.Data.Auth
         }
 
         [Fact]
-        public async Task GetValidTokensByUserAsync_ShouldReturnEmpty_WhenNoValidTokens()
+        public async Task GetValidTokensByUserAsyncShouldReturnEmptyWhenNoValidTokens()
         {
             var result = await _repository.GetValidTokensByUserAsync(99);
 

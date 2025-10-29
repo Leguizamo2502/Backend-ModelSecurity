@@ -37,7 +37,7 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task GetAllAsync_ShouldReturnOnlyActive()
+        public async Task GetAllAsyncShouldReturnOnlyActive()
         {
             var result = await _repository.GetAllAsync();
 
@@ -46,7 +46,7 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task GetDeletes_ShouldReturnOnlyDeleted()
+        public async Task GetDeletesShouldReturnOnlyDeleted()
         {
             var result = await _repository.GetDeletes();
 
@@ -55,7 +55,7 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnEntity_WhenExistsAndActive()
+        public async Task GetByIdAsyncShouldReturnEntityWhenExistsAndActive()
         {
             var result = await _repository.GetByIdAsync(1);
 
@@ -64,14 +64,14 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnNull_WhenDeleted()
+        public async Task GetByIdAsyncShouldReturnNullWhenDeleted()
         {
             var result = await _repository.GetByIdAsync(2);
             result.Should().BeNull();
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldAddNewEntity()
+        public async Task CreateAsyncShouldAddNewEntity()
         {
             var entity = new FakeEntity { Id = 4, Name = "D" };
 
@@ -82,7 +82,7 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task UpdateAsync_ShouldModifyExistingEntity()
+        public async Task UpdateAsyncShouldModifyExistingEntity()
         {
             var entity = _context.Set<FakeEntity>().First(x => x.Id == 1);
             entity.Name = "Updated";
@@ -96,7 +96,7 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldRemoveEntity()
+        public async Task DeleteAsyncShouldRemoveEntity()
         {
             var result = await _repository.DeleteAsync(1);
 
@@ -105,21 +105,21 @@ namespace test.Data
         }
 
         [Fact]
-        public async Task DeleteLogicAsync_ShouldMarkEntityAsDeleted()
+        public async Task DeleteLogicAsyncShouldMarkEntityAsDeleted()
         {
             var result = await _repository.DeleteLogicAsync(3);
 
             result.Should().BeTrue();
 
             var entity = await _repository.GetByIdAsync(3);
-            entity.Should().BeNull(); // Ya no es activo
+            entity.Should().BeNull();
 
             var deleted = await _context.Set<FakeEntity>().FindAsync(3);
             deleted!.IsDeleted.Should().BeTrue();
         }
 
         [Fact]
-        public async Task RestoreAsync_ShouldUnmarkEntityAsDeleted()
+        public async Task RestoreAsyncShouldUnmarkEntityAsDeleted()
         {
             var entity = await _context.Set<FakeEntity>().FindAsync(2);
             entity!.IsDeleted.Should().BeTrue();

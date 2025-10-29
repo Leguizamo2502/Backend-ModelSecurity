@@ -37,10 +37,10 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 1: GetAllAsync retorna los registros correctamente
+        // TEST 1: GetAllAsync retorna los registros correctamente
         // ================================================================
         [Fact]
-        public async Task GetAllAsync_ShouldReturnMappedDtos()
+        public async Task GetAllAsyncShouldReturnMappedDtos()
         {
             // Arrange
             var entities = new List<FormModule>
@@ -55,17 +55,10 @@ namespace test.Business
                 new FormModuleSelectDto { Id = 2, FormId = 11, ModuleId = 21 }
             };
 
-            // Mockeamos la estrategia de obtención
             _mockRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(entities);
             _mockMapper.Setup(m => m.Map<IEnumerable<FormModuleSelectDto>>(entities))
                        .Returns(expectedDtos);
 
-            // Inyectamos indirectamente la estrategia simulando GetAllAsync
-            _mockRepository.Setup(r => r.GetAllAsync()).ReturnsAsync(entities);
-            _mockMapper.Setup(m => m.Map<IEnumerable<FormModuleSelectDto>>(entities))
-                       .Returns(expectedDtos);
-
-            // Act
             var result = await _service.GetAllAsync(GetAllType.GetAll);
 
             // Assert
@@ -75,30 +68,26 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 2: GetAllAsync lanza BusinessException si hay error
+        // TEST 2: GetAllAsync lanza BusinessException si hay error
         // ================================================================
         [Fact]
-        public async Task GetAllAsync_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task GetAllAsyncShouldThrowBusinessExceptionWhenRepositoryFails()
         {
-            // Arrange
             _mockRepository.Setup(r => r.GetAllAsync())
                            .ThrowsAsync(new Exception("DB connection error"));
 
-            // Act
             Func<Task> act = async () => await _service.GetAllAsync(GetAllType.GetAll);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage("*Error al obtener todos los registros*");
         }
 
         // ================================================================
-        // ✅ TEST 3: GetByIdAsync retorna un registro mapeado correctamente
+        // TEST 3: GetByIdAsync retorna un registro mapeado correctamente
         // ================================================================
         [Fact]
-        public async Task GetByIdAsync_ShouldReturnMappedDto_WhenEntityExists()
+        public async Task GetByIdAsyncShouldReturnMappedDtoWhenEntityExists()
         {
-            // Arrange
             var entity = new FormModule { Id = 5, FormId = 15, ModuleId = 25 };
             var expectedDto = new FormModuleSelectDto { Id = 5, FormId = 15, ModuleId = 25 };
 
@@ -107,10 +96,8 @@ namespace test.Business
             _mockMapper.Setup(m => m.Map<FormModuleSelectDto?>(entity))
                        .Returns(expectedDto);
 
-            // Act
             var result = await _service.GetByIdAsync(5);
 
-            // Assert
             result.Should().NotBeNull();
             result!.Id.Should().Be(5);
             result.FormId.Should().Be(15);
@@ -118,35 +105,30 @@ namespace test.Business
         }
 
         // ================================================================
-        // ❌ TEST 4: GetByIdAsync lanza excepción si ID es inválido
+        // TEST 4: GetByIdAsync lanza excepción si ID es inválido
         // ================================================================
         [Theory]
         [InlineData(0)]
         [InlineData(-5)]
-        public async Task GetByIdAsync_ShouldThrow_WhenIdIsInvalid(int invalidId)
+        public async Task GetByIdAsyncShouldThrowWhenIdIsInvalid(int invalidId)
         {
-            // Act
             Func<Task> act = async () => await _service.GetByIdAsync(invalidId);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage($"*Error al obtener el registro con ID {invalidId}*");
         }
 
         // ================================================================
-        // ❌ TEST 5: GetByIdAsync lanza BusinessException si ocurre error interno
+        // TEST 5: GetByIdAsync lanza BusinessException si ocurre error interno
         // ================================================================
         [Fact]
-        public async Task GetByIdAsync_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task GetByIdAsyncShouldThrowBusinessExceptionWhenRepositoryFails()
         {
-            // Arrange
             _mockRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
                            .ThrowsAsync(new Exception("DB fail"));
 
-            // Act
             Func<Task> act = async () => await _service.GetByIdAsync(10);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage("*Error al obtener el registro con ID 10*");
         }

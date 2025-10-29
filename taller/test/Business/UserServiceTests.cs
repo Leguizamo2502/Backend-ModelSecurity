@@ -35,12 +35,11 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 1: CreateAsyncUser crea el usuario correctamente
+        // TEST 1: CreateAsyncUser crea el usuario correctamente
         // ================================================================
         [Fact]
-        public async Task CreateAsyncUser_ShouldReturnMappedDto_WhenSuccess()
+        public async Task CreateAsyncUserShouldReturnMappedDtoWhenSuccess()
         {
-            // Arrange
             var dto = new UserDto { Id = 1, Email = "test@mail.com" };
             var userEntity = new User { Id = 1, Email = "test@mail.com" };
 
@@ -48,37 +47,32 @@ namespace test.Business
             _mockUserRepo.Setup(r => r.CreateAsync(userEntity)).ReturnsAsync(userEntity);
             _mockMapper.Setup(m => m.Map<UserDto>(userEntity)).Returns(dto);
 
-            // Act
             var result = await _service.CreateAsyncUser(dto);
 
-            // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(1);
             result.Email.Should().Be("test@mail.com");
 
-            // Verificamos que se llame a AsignateUserRTo con el ID del usuario creado
             _mockRolUserService.Verify(s => s.AsignateUserRTo(userEntity.Id), Times.Once);
         }
 
         // ================================================================
-        // ❌ TEST 2: CreateAsyncUser lanza excepción si el DTO es nulo
+        // TEST 2: CreateAsyncUser lanza excepción si el DTO es nulo
         // ================================================================
         [Fact]
-        public async Task CreateAsyncUser_ShouldThrow_WhenDtoIsNull()
+        public async Task CreateAsyncUserShouldThrowWhenDtoIsNull()
         {
-            // Act
             Func<Task> act = async () => await _service.CreateAsyncUser(null!);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage("*El DTO no puede ser nulo*");
         }
 
         // ================================================================
-        // ❌ TEST 3: CreateAsyncUser lanza BusinessException si falla el repositorio
+        // TEST 3: CreateAsyncUser lanza BusinessException si falla el repositorio
         // ================================================================
         [Fact]
-        public async Task CreateAsyncUser_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task CreateAsyncUserShouldThrowBusinessExceptionWhenRepositoryFails()
         {
             var dto = new UserDto { Id = 1, Email = "test@mail.com" };
             var userEntity = new User { Id = 1, Email = "test@mail.com" };
@@ -94,30 +88,27 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 4: UpdateAsyncUser actualiza correctamente el usuario
+        // TEST 4: UpdateAsyncUser actualiza correctamente el usuario
         // ================================================================
         [Fact]
-        public async Task UpdateAsyncUser_ShouldReturnTrue_WhenUpdateSucceeds()
+        public async Task UpdateAsyncUserShouldReturnTrueWhenUpdateSucceeds()
         {
-            // Arrange
             var dto = new UserDto { Id = 1, Email = "test@mail.com" };
             var entity = new User { Id = 1, Email = "test@mail.com" };
 
             _mockMapper.Setup(m => m.Map<User>(dto)).Returns(entity);
             _mockUserRepo.Setup(r => r.UpdateAsync(entity)).ReturnsAsync(true);
 
-            // Act
             var result = await _service.UpdateAsyncUser(dto);
 
-            // Assert
             result.Should().BeTrue();
         }
 
         // ================================================================
-        // ❌ TEST 5: UpdateAsyncUser lanza excepción si DTO es nulo
+        // TEST 5: UpdateAsyncUser lanza excepción si DTO es nulo
         // ================================================================
         [Fact]
-        public async Task UpdateAsyncUser_ShouldThrow_WhenDtoIsNull()
+        public async Task UpdateAsyncUserShouldThrowWhenDtoIsNull()
         {
             Func<Task> act = async () => await _service.UpdateAsyncUser(null!);
 
@@ -126,22 +117,19 @@ namespace test.Business
         }
 
         // ================================================================
-        // ❌ TEST 6: UpdateAsyncUser retorna false si repositorio falla
+        // TEST 6: UpdateAsyncUser retorna false si repositorio falla
         // ================================================================
         [Fact]
-        public async Task UpdateAsyncUser_ShouldReturnFalse_WhenRepositoryFails()
+        public async Task UpdateAsyncUserShouldReturnFalseWhenRepositoryFails()
         {
-            // Arrange
             var dto = new UserDto { Id = 1, Email = "test@mail.com" };
             var entity = new User { Id = 1, Email = "test@mail.com" };
 
             _mockMapper.Setup(m => m.Map<User>(dto)).Returns(entity);
             _mockUserRepo.Setup(r => r.UpdateAsync(entity)).ReturnsAsync(false);
 
-            // Act
             var result = await _service.UpdateAsyncUser(dto);
 
-            // Assert
             result.Should().BeFalse();
         }
     }

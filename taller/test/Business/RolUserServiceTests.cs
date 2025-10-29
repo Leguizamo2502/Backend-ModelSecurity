@@ -31,22 +31,19 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 1: AsignateUserRTo asigna rol correctamente
+        // TEST 1: AsignateUserRTo asigna rol correctamente
         // ================================================================
         [Fact]
-        public async Task AsignateUserRTo_ShouldReturnMappedDto_WhenSuccess()
+        public async Task AsignateUserRToShouldReturnMappedDtoWhenSuccess()
         {
-            // Arrange
             var rolUser = new RolUser { Id = 1, RolId = 2, UserId = 5, IsDeleted = false };
             var dto = new RolUserDto { Id = 1, RolId = 2, UserId = 5 };
 
             _mockRepository.Setup(r => r.AsignateUserRol(5)).ReturnsAsync(rolUser);
             _mockMapper.Setup(m => m.Map<RolUserDto>(rolUser)).Returns(dto);
 
-            // Act
             var result = await _service.AsignateUserRTo(5);
 
-            // Assert
             result.Should().NotBeNull();
             result.Id.Should().Be(1);
             result.RolId.Should().Be(2);
@@ -54,30 +51,26 @@ namespace test.Business
         }
 
         // ================================================================
-        // ❌ TEST 2: AsignateUserRTo lanza BusinessException si falla repositorio
+        // TEST 2: AsignateUserRTo lanza BusinessException si falla repositorio
         // ================================================================
         [Fact]
-        public async Task AsignateUserRTo_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task AsignateUserRToShouldThrowBusinessExceptionWhenRepositoryFails()
         {
-            // Arrange
             _mockRepository.Setup(r => r.AsignateUserRol(It.IsAny<int>()))
                            .ThrowsAsync(new Exception("DB error"));
 
-            // Act
             Func<Task> act = async () => await _service.AsignateUserRTo(1);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage("*Error al asignar el rol al usuario*");
         }
 
         // ================================================================
-        // ✅ TEST 3: GetAllAsync retorna correctamente los roles de usuario
+        // TEST 3: GetAllAsync retorna correctamente los roles de usuario
         // ================================================================
         [Fact]
-        public async Task GetAllAsync_ShouldReturnMappedDtos()
+        public async Task GetAllAsyncShouldReturnMappedDtos()
         {
-            // Arrange
             var entities = new List<RolUser>
             {
                 new RolUser { Id = 1, RolId = 2, UserId = 10 },
@@ -94,20 +87,18 @@ namespace test.Business
             _mockMapper.Setup(m => m.Map<IEnumerable<RolUserSelectDto>>(entities))
                        .Returns(expectedDtos);
 
-            // Act
             var result = await _service.GetAllAsync();
 
-            // Assert
             result.Should().NotBeNull();
             result.Should().HaveCount(2);
             result.Should().BeEquivalentTo(expectedDtos);
         }
 
         // ================================================================
-        // ❌ TEST 4: GetAllAsync lanza BusinessException si hay error
+        // TEST 4: GetAllAsync lanza BusinessException si hay error
         // ================================================================
         [Fact]
-        public async Task GetAllAsync_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task GetAllAsyncShouldThrowBusinessExceptionWhenRepositoryFails()
         {
             _mockRepository.Setup(r => r.GetAllAsync()).ThrowsAsync(new Exception("DB error"));
 
@@ -118,41 +109,35 @@ namespace test.Business
         }
 
         // ================================================================
-        // ✅ TEST 5: GetAllRolUser retorna correctamente los nombres de roles
+        // TEST 5: GetAllRolUser retorna correctamente los nombres de roles
         // ================================================================
         [Fact]
-        public async Task GetAllRolUser_ShouldReturnRoleNames()
+        public async Task GetAllRolUserShouldReturnRoleNames()
         {
-            // Arrange
             var roles = new List<string> { "Admin", "User" };
             _mockRepository.Setup(r => r.GetJoinRolesAsync(10)).ReturnsAsync(roles);
 
-            // Act
             var result = await _service.GetAllRolUser(10);
 
-            // Assert
             result.Should().NotBeNull();
             result.Should().Contain("Admin");
             result.Should().HaveCount(2);
         }
 
         // ================================================================
-        // ✅ TEST 6: GetByIdJoin retorna el DTO correctamente
+        // TEST 6: GetByIdJoin retorna el DTO correctamente
         // ================================================================
         [Fact]
-        public async Task GetByIdJoin_ShouldReturnMappedDto_WhenEntityExists()
+        public async Task GetByIdJoinShouldReturnMappedDtoWhenEntityExists()
         {
-            // Arrange
             var entity = new RolUser { Id = 5, RolId = 3, UserId = 12 };
             var expectedDto = new RolUserSelectDto { Id = 5, RolId = 3, UserId = 12 };
 
             _mockRepository.Setup(r => r.GetByIdAsync(5)).ReturnsAsync(entity);
             _mockMapper.Setup(m => m.Map<RolUserSelectDto>(entity)).Returns(expectedDto);
 
-            // Act
             var result = await _service.GetByIdJoin(5);
 
-            // Assert
             result.Should().NotBeNull();
             result!.Id.Should().Be(5);
             result.RolId.Should().Be(3);
@@ -160,12 +145,12 @@ namespace test.Business
         }
 
         // ================================================================
-        // ❌ TEST 7: GetByIdJoin lanza excepción si ID es inválido
+        // TEST 7: GetByIdJoin lanza excepción si ID es inválido
         // ================================================================
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
-        public async Task GetByIdJoin_ShouldThrow_WhenIdIsInvalid(int invalidId)
+        public async Task GetByIdJoinShouldThrowWhenIdIsInvalid(int invalidId)
         {
             Func<Task> act = async () => await _service.GetByIdJoin(invalidId);
 
@@ -174,10 +159,10 @@ namespace test.Business
         }
 
         // ================================================================
-        // ❌ TEST 8: GetByIdJoin lanza BusinessException si falla el repositorio
+        // TEST 8: GetByIdJoin lanza BusinessException si falla el repositorio
         // ================================================================
         [Fact]
-        public async Task GetByIdJoin_ShouldThrowBusinessException_WhenRepositoryFails()
+        public async Task GetByIdJoinShouldThrowBusinessExceptionWhenRepositoryFails()
         {
             _mockRepository.Setup(r => r.GetByIdAsync(It.IsAny<int>()))
                            .ThrowsAsync(new Exception("DB error"));

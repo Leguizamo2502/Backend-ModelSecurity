@@ -37,10 +37,10 @@ namespace test.Business.Auth
         }
 
         // ===================================================
-        // ✅ TEST 1: Registro exitoso
+        // TEST 1: Registro exitoso
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldRegisterUserSuccessfully()
+        public async Task RegisterAsyncShouldRegisterUserSuccessfully()
         {
             // Arrange
             var dto = new RegisterUserDto
@@ -78,10 +78,10 @@ namespace test.Business.Auth
         }
 
         // ===================================================
-        // ❌ TEST 2: Contraseñas no coinciden
+        // TEST 2: Contraseñas no coinciden
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldThrow_WhenPasswordsDoNotMatch()
+        public async Task RegisterAsyncShouldThrowWhenPasswordsDoNotMatch()
         {
             var dto = new RegisterUserDto
             {
@@ -97,10 +97,10 @@ namespace test.Business.Auth
         }
 
         // ===================================================
-        // ❌ TEST 3: Correo ya registrado
+        // TEST 3: Correo ya registrado
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldThrow_WhenEmailAlreadyExists()
+        public async Task RegisterAsyncShouldThrowWhenEmailAlreadyExists()
         {
             var dto = new RegisterUserDto
             {
@@ -118,10 +118,10 @@ namespace test.Business.Auth
         }
 
         // ===================================================
-        // ❌ TEST 4: Documento duplicado
+        // TEST 4: Documento duplicado
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldThrow_WhenDocumentAlreadyExists()
+        public async Task RegisterAsyncShouldThrowWhenDocumentAlreadyExists()
         {
             var dto = new RegisterUserDto
             {
@@ -141,16 +141,16 @@ namespace test.Business.Auth
         }
 
         // ===================================================
-        // ❌ TEST 5: Contraseña inválida
+        // TEST 5: Contraseña inválida
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldThrow_WhenPasswordIsWeak()
+        public async Task RegisterAsyncShouldThrowWhenPasswordIsWeak()
         {
             // Arrange
             var dto = new RegisterUserDto
             {
                 Email = "test@mail.com",
-                Password = "abc",          // ❌ Contraseña débil (sin mayúsculas, sin número)
+                Password = "abc",
                 ConfirmPassword = "abc"
             };
 
@@ -165,12 +165,11 @@ namespace test.Business.Auth
                 .WithMessage("*Contraseña no valida*");
         }
 
-
         // ===================================================
-        // ❌ TEST 6: Usuario no recuperado tras creación
+        // TEST 6: Usuario no recuperado tras creación
         // ===================================================
         [Fact]
-        public async Task RegisterAsync_ShouldThrow_WhenUserNotRetrievedAfterCreation()
+        public async Task RegisterAsyncShouldThrowWhenUserNotRetrievedAfterCreation()
         {
             var dto = new RegisterUserDto
             {
@@ -186,20 +185,16 @@ namespace test.Business.Auth
             _mockUserRepo.Setup(r => r.ExistsByEmailAsync(dto.Email)).ReturnsAsync(false);
             _mockUserRepo.Setup(r => r.ExistsByDocumentAsync(dto.Identification)).ReturnsAsync(false);
 
-            // ✅ Mockear ambos mapeos (User y Person)
             _mockMapper.Setup(m => m.Map<Person>(dto)).Returns(person);
             _mockMapper.Setup(m => m.Map<User>(dto)).Returns(user);
 
             _mockUserRepo.Setup(r => r.CreateAsync(It.IsAny<User>())).ReturnsAsync(user);
-            _mockUserRepo.Setup(r => r.GetByIdAsync(user.Id)).ReturnsAsync((User?)null); // simulamos error
+            _mockUserRepo.Setup(r => r.GetByIdAsync(user.Id)).ReturnsAsync((User?)null);
 
-            // Act
             Func<Task> act = async () => await _service.RegisterAsync(dto);
 
-            // Assert
             await act.Should().ThrowAsync<BusinessException>()
                 .WithMessage("*no pudo ser recuperado*");
         }
-
     }
 }
