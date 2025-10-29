@@ -30,7 +30,7 @@ namespace Entity.Infrastructure.DataInit
                     Active = true,
                     IsDeleted = false,
                     PersonId = 1,
-                    CreatedAt =date
+                    CreatedAt =date,
                 },
                 new User
                 {

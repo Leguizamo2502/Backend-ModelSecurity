@@ -9,7 +9,7 @@ using Web.Controllers.ControllersBase.Web.Controllers.BaseController;
 namespace Web.Controllers.Implements
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Produces("application/json")]
     public class PersonController : BaseController<PersonSelectDto,PersonDto, IPersonService>
