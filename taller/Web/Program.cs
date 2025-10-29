@@ -5,6 +5,7 @@ using Entity.Validations.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Web.Extensions;
+using Web.Middleware;
 using Web.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +37,7 @@ builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 
-//app.UseMiddleware<DbContextMiddleware>();
+app.UseMiddleware<DbContextMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

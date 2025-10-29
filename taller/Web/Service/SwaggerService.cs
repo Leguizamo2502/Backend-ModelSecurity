@@ -32,37 +32,14 @@ namespace Web.Extensions
                 });
 
 
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Ingresa tu token JWT como: Bearer {token}"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] {}
-                    }
-                });
+           
 
                 c.AddSecurityDefinition("DbProvider", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
                     Name = "X-DB-Provider",
                     Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
                     In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Select DB Provider: sqlserver, postgresql, mysql"
+                    Description = "Select DB Provider: sqlserver, postgres, mysql"
                 });
 
                 c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
