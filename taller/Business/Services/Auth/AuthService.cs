@@ -47,7 +47,7 @@ namespace Business.Services.Auth
                 var person = _mapper.Map<Person>(dto);
                 var user = _mapper.Map<User>(dto);
 
-                user.Password = EncriptePassword.EncripteSHA256(user.Password);
+                user.Password = EncriptePassword.EncripteSHA256(user.Password!);
 
                 user.Person = person;
                 user.Active = true;

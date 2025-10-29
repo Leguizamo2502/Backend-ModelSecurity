@@ -1,5 +1,4 @@
 ﻿using Entity.Domain.Interfaces;
-using Entity.Domain.Models;
 using Entity.Domain.Models.Auth;
 using Entity.Domain.Models.Implements;
 using Microsoft.AspNetCore.Http;
